@@ -55,14 +55,7 @@ function sendAll() {
   if (events.length !== 0) {
     let req = Object.assign({}, analyticsAdapter.context.requestTemplate, {hb_ev: events});
     ajax(
-      `${analyticsAdapter.context.ajaxUrl}/commercial/api/hb`,
-      () => {
-      },
-      JSON.stringify(req),
-      {
-        method: 'PUT',
-        contentType: 'application/json; charset=utf-8'
-      }
+      `${analyticsAdapter.context.ajaxUrl}/commercial/api/hb?a=${encodeURIComponent(JSON.stringify(req))}`
     );
   }
 }

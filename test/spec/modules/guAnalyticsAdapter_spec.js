@@ -152,13 +152,24 @@ describe('Gu analytics adapter', () => {
   });
 
   it('should handle auction end event', () => {
-    timer.tick(447);
+    const Url = require('url-parse');
+    const queryStringify = require('querystringify');
     const ajaxStub = sandbox.stub(ajax, 'ajax');
+    timer.tick(447);
     events.emit(CONSTANTS.EVENTS.AUCTION_END, RESPONSE);
-    let ev = analyticsAdapter.context.queue.peekAll();
-    expect(ev).to.have.length(0);
+
+    const remainingEvents = analyticsAdapter.context.queue.peekAll();
+    expect(remainingEvents).to.have.length(0);
+
     expect(ajaxStub.called).to.be.equal(true);
-    ev = JSON.parse(ajaxStub.firstCall.args[2]).hb_ev;
-    expect(ev[4]).to.be.eql({ev: 'end', aid: '5018eb39-f900-4370-b71e-3bb5b48d324f', ttr: 447});
+
+    const parsedUrl = new Url(`https:${ajaxStub.firstCall.args[0]}`);
+    expect(parsedUrl).to.have.property('query');
+
+    const parsedQuery = queryStringify.parse(parsedUrl.query);
+    expect(parsedQuery).to.have.property('a');
+
+    const eventsSent = JSON.parse(parsedQuery.a).hb_ev;
+    expect(eventsSent[4]).to.be.eql({ev: 'end', aid: '5018eb39-f900-4370-b71e-3bb5b48d324f', ttr: 447});
   });
 });
