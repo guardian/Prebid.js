@@ -376,6 +376,8 @@ function getPreparedBidForAuction({adUnitCode, bid, bidRequest, auctionId}) {
     adUnitCode
   });
 
+  debugger;
+
   bidObject.timeToRespond = bidObject.responseTimestamp - bidObject.requestTimestamp;
 
   // Let listeners know that now is the time to adjust the bid, if they want to.
@@ -577,6 +579,11 @@ export function adjustBids(bid) {
       }
     }
   }
+
+  console.log('Bid is: ' + JSON.stringify(bid));
+  console.log('Bid.cpm is: ' + bid.cpm);
+  console.log('bidPriceAdjusted is: ' + bidPriceAdjusted);
+  console.log('bid.bidderCode is: ' + bid.bidderCode);
 
   if (bidPriceAdjusted >= 0) {
     bid.cpm = bidPriceAdjusted;
