@@ -171,7 +171,7 @@ function gulpBundle(dev) {
 // Bundle prebid with modules. This can then be invoked when needed
 function gulpBundleAsFunction(dev) {
   return bundle(dev)
-    .pipe(wrap('(function(){<%= contents %>})'))
+    .pipe(wrap('export function runPrebid(){<%= contents %>}'))
     .pipe(gulp.dest('build/' + (dev ? 'dev-function' : 'dist-function')));
 }
 
