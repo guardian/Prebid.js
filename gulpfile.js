@@ -26,6 +26,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var through = require('through2');
 var fs = require('fs');
 var jsEscape = require('gulp-js-escape');
+var wrap = require("gulp-wrap");
 
 var prebid = require('./package.json');
 var dateString = 'Updated : ' + (new Date()).toISOString().substring(0, 10);
@@ -165,6 +166,13 @@ function makeWebpackPkg() {
 
 function gulpBundle(dev) {
   return bundle(dev).pipe(gulp.dest('build/' + (dev ? 'dev' : 'dist')));
+}
+
+// Bundle prebid with modules. This can then be invoked when needed
+function gulpBundleAsFunction(dev) {
+  return bundle(dev)
+    .pipe(wrap('(function(){<%= contents %>})'))
+    .pipe(gulp.dest('build/' + (dev ? 'dev-function' : 'dist-function')));
 }
 
 function nodeBundle(modules) {
@@ -320,6 +328,8 @@ gulp.task(escapePostbidConfig);
 gulp.task('build-bundle-dev', gulp.series(makeDevpackPkg, gulpBundle.bind(null, true)));
 gulp.task('build-bundle-prod', gulp.series(makeWebpackPkg, gulpBundle.bind(null, false)));
 
+gulp.task('build-bundle-prod-function', gulp.series(makeWebpackPkg, gulpBundleAsFunction.bind(null, false)));
+
 // public tasks (dependencies are needed for each task since they can be ran on their own)
 gulp.task('test', gulp.series(clean, lint, test));
 
@@ -329,6 +339,7 @@ gulp.task(viewCoverage);
 gulp.task('coveralls', gulp.series('test-coverage', coveralls));
 
 gulp.task('build', gulp.series(clean, 'build-bundle-prod'));
+gulp.task('build-function', gulp.series(clean, 'build-bundle-prod-function'));
 gulp.task('build-postbid', gulp.series(escapePostbidConfig, buildPostbid));
 
 gulp.task('serve', gulp.series(clean, lint, gulp.parallel('build-bundle-dev', watch, test)));
