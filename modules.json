@@ -2,6 +2,7 @@
   "consentManagement",
 
   "guAnalyticsAdapter",
+  "pubCommonId",
 
   "adyoulikeBidAdapter",
   "appnexusBidAdapter",
