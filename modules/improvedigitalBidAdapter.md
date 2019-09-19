@@ -2,7 +2,7 @@
 
 **Module Name**: Improve Digital Bidder Adapter
 **Module Type**: Bidder Adapter
-**Maintainer**: hb@azerion.com
+**Maintainer**: hb@improvedigital.com
 
 # Description
 

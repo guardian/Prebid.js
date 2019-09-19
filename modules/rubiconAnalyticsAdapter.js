@@ -28,13 +28,40 @@ config.getConfig('s2sConfig', ({s2sConfig}) => {
 });
 
 export const SEND_TIMEOUT = 3000;
-const DEFAULT_INTEGRATION = 'pbjs';
+const INTEGRATION = 'pbjs';
 
 const cache = {
   auctions: {},
   targeting: {},
   timeouts: {},
 };
+
+// basically lodash#pick that also allows transformation functions and property renaming
+function _pick(obj, properties) {
+  return properties.reduce((newObj, prop, i) => {
+    if (typeof prop === 'function') {
+      return newObj;
+    }
+
+    let newProp = prop;
+    let match = prop.match(/^(.+?)\sas\s(.+?)$/i);
+
+    if (match) {
+      prop = match[1];
+      newProp = match[2];
+    }
+
+    let value = obj[prop];
+    if (typeof properties[i + 1] === 'function') {
+      value = properties[i + 1](value, newObj);
+    }
+    if (typeof value !== 'undefined') {
+      newObj[newProp] = value;
+    }
+
+    return newObj;
+  }, {});
+}
 
 function stringProperties(obj) {
   return Object.keys(obj).reduce((newObj, prop) => {
@@ -71,7 +98,7 @@ function formatSource(src) {
 
 function sendMessage(auctionId, bidWonId) {
   function formatBid(bid) {
-    return utils.pick(bid, [
+    return _pick(bid, [
       'bidder',
       'bidId',
       'status',
@@ -86,7 +113,7 @@ function sendMessage(auctionId, bidWonId) {
       'clientLatencyMillis',
       'serverLatencyMillis',
       'params',
-      'bidResponse', bidResponse => bidResponse ? utils.pick(bidResponse, [
+      'bidResponse', bidResponse => bidResponse ? _pick(bidResponse, [
         'bidPriceUSD',
         'dealId',
         'dimensions',
@@ -95,7 +122,7 @@ function sendMessage(auctionId, bidWonId) {
     ]);
   }
   function formatBidWon(bid) {
-    return Object.assign(formatBid(bid), utils.pick(bid.adUnit, [
+    return Object.assign(formatBid(bid), _pick(bid.adUnit, [
       'adUnitCode',
       'transactionId',
       'videoAdFormat', () => bid.videoAdFormat,
@@ -112,21 +139,17 @@ function sendMessage(auctionId, bidWonId) {
   let referrer = config.getConfig('pageUrl') || utils.getTopWindowUrl();
   let message = {
     eventTimeMillis: Date.now(),
-    integration: config.getConfig('rubicon.int_type') || DEFAULT_INTEGRATION,
+    integration: INTEGRATION,
     version: '$prebid.version$',
     referrerUri: referrer
   };
-  const wrapperName = config.getConfig('rubicon.wrapperName');
-  if (wrapperName) {
-    message.wrapperName = wrapperName;
-  }
   let auctionCache = cache.auctions[auctionId];
   if (auctionCache && !auctionCache.sent) {
     let adUnitMap = Object.keys(auctionCache.bids).reduce((adUnits, bidId) => {
       let bid = auctionCache.bids[bidId];
       let adUnit = adUnits[bid.adUnit.adUnitCode];
       if (!adUnit) {
-        adUnit = adUnits[bid.adUnit.adUnitCode] = utils.pick(bid.adUnit, [
+        adUnit = adUnits[bid.adUnit.adUnitCode] = _pick(bid.adUnit, [
           'adUnitCode',
           'transactionId',
           'mediaTypes',
@@ -164,7 +187,7 @@ function sendMessage(auctionId, bidWonId) {
     // This allows the bidWon events to have these params even in the case of a delayed render
     Object.keys(auctionCache.bids).forEach(function (bidId) {
       let adCode = auctionCache.bids[bidId].adUnit.adUnitCode;
-      Object.assign(auctionCache.bids[bidId], utils.pick(adUnitMap[adCode], ['accountId', 'siteId', 'zoneId']));
+      Object.assign(auctionCache.bids[bidId], _pick(adUnitMap[adCode], ['accountId', 'siteId', 'zoneId']));
     });
 
     let auction = {
@@ -209,22 +232,22 @@ function sendMessage(auctionId, bidWonId) {
   );
 }
 
-export function parseBidResponse(bid) {
-  return utils.pick(bid, [
-    'bidPriceUSD', () => {
+function parseBidResponse(bid) {
+  return _pick(bid, [
+    'getCpmInNewCurrency as bidPriceUSD', (fn) => {
       if (typeof bid.currency === 'string' && bid.currency.toUpperCase() === 'USD') {
         return Number(bid.cpm);
       }
       // use currency conversion function if present
-      if (typeof bid.getCpmInNewCurrency === 'function') {
-        return Number(bid.getCpmInNewCurrency('USD'));
+      if (typeof fn === 'function') {
+        return Number(fn('USD'));
       }
-      utils.logWarn('Rubicon Analytics Adapter: Could not determine the bidPriceUSD of the bid ', bid);
+      // TODO: throw error or something if not USD and currency module wasn't present?
     },
     'dealId',
     'status',
     'mediaType',
-    'dimensions', () => utils.pick(bid, [
+    'dimensions', () => _pick(bid, [
       'width',
       'height'
     ])
@@ -300,7 +323,7 @@ let rubiconAdapter = Object.assign({}, baseAdapter, {
       case AUCTION_INIT:
         // set the rubicon aliases
         setRubiconAliases(adapterManager.aliasRegistry);
-        let cacheEntry = utils.pick(args, [
+        let cacheEntry = _pick(args, [
           'timestamp',
           'timeout'
         ]);
@@ -313,7 +336,7 @@ let rubiconAdapter = Object.assign({}, baseAdapter, {
           // mark adUnits we expect bidWon events for
           cache.auctions[args.auctionId].bidsWon[bid.adUnitCode] = false;
 
-          memo[bid.bidId] = utils.pick(bid, [
+          memo[bid.bidId] = _pick(bid, [
             'bidder', bidder => bidder.toLowerCase(),
             'bidId',
             'status', () => 'no-bid', // default a bid to no-bid until response is recieved or bid is timed out
@@ -322,7 +345,7 @@ let rubiconAdapter = Object.assign({}, baseAdapter, {
               switch (bid.bidder) {
                 // specify bidder params we want here
                 case 'rubicon':
-                  return utils.pick(params, [
+                  return _pick(params, [
                     'accountId',
                     'siteId',
                     'zoneId'
@@ -353,7 +376,7 @@ let rubiconAdapter = Object.assign({}, baseAdapter, {
                 }
               }
             },
-            'adUnit', () => utils.pick(bid, [
+            'adUnit', () => _pick(bid, [
               'adUnitCode',
               'transactionId',
               'sizes as dimensions', sizes => sizes.map(sizeToDimensions),

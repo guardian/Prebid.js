@@ -42,8 +42,7 @@ export const spec = {
     const payload = {
       referrer: getReferrerInfo(bidderRequest),
       data: bids,
-      deviceWidth: screen.width,
-      hb_version: '$prebid.version$'
+      deviceWidth: screen.width
     };
 
     let gdpr = bidderRequest.gdprConsent;
@@ -85,8 +84,7 @@ export const spec = {
           ttl: bid.ttl,
           ad: bid.ad,
           requestId: bid.bidId,
-          creativeId: bid.creativeId,
-          placementId: bid.placementId
+          creativeId: bid.creativeId
         };
         bidResponses.push(bidResponse);
       });
@@ -94,29 +92,11 @@ export const spec = {
     return bidResponses;
   },
 
-  getUserSyncs: function(syncOptions, responses, gdprConsent) {
-    let queryParams = {
-      hb_provider: 'prebid',
-      hb_version: '$prebid.version$'
-    };
-
-    if (gdprConsent) {
-      let gdprIab = {
-        status: findGdprStatus(gdprConsent.gdprApplies, gdprConsent.vendorData),
-        consent: gdprConsent.consentString
-      };
-
-      queryParams.gdprIab = JSON.stringify(gdprIab)
-    }
-
-    if (utils.deepAccess(responses[0], 'body.responses.0.placementId')) {
-      queryParams.placementId = responses[0].body.responses[0].placementId
-    };
-
+  getUserSyncs: function(syncOptions, responses, gdprApplies) {
     if (syncOptions.iframeEnabled) {
       return [{
         type: 'iframe',
-        url: '//sync.teads.tv/iframe?' + utils.parseQueryStringParameters(queryParams)
+        url: '//sync.teads.tv/iframe'
       }];
     }
   }

@@ -6,7 +6,6 @@ import { hook } from './hook';
 
 const VIDEO_MEDIA_TYPE = 'video';
 export const OUTSTREAM = 'outstream';
-export const INSTREAM = 'instream';
 
 /**
  * Helper functions for working with video-enabled adUnits

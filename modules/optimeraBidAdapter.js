@@ -1,5 +1,4 @@
 import { registerBidder } from '../src/adapters/bidderFactory';
-import { deepAccess } from '../src/utils';
 
 const BIDDER_CODE = 'optimera';
 const SCORES_BASE_URL = 'https://dyv1bugovvq1g.cloudfront.net/';
@@ -12,11 +11,12 @@ export const spec = {
    * @param {bidRequest} bid The bid params to validate.
    * @return boolean True if this is a valid bid, and false otherwise.
    */
-  isBidRequestValid (bidRequest) {
+  isBidRequestValid: function (bidRequest) {
     if (typeof bidRequest.params !== 'undefined' && typeof bidRequest.params.clientID !== 'undefined') {
       return true;
+    } else {
+      return false;
     }
-    return false;
   },
   /**
    * Make a server request from the list of BidRequests.
@@ -27,19 +27,18 @@ export const spec = {
    * @param {validBidRequests[]} - an array of bids
    * @return ServerRequest Info describing the request to the server.
    */
-  buildRequests (validBidRequests) {
-    const optimeraHost = window.location.host;
-    const optimeraPathName = window.location.pathname;
+  buildRequests: function (validBidRequests) {
+    let optimeraHost = window.location.host;
+    let optimeraPathName = window.location.pathname;
     if (typeof validBidRequests[0].params.clientID !== 'undefined') {
-      const { clientID } = validBidRequests[0].params;
-      const scoresURL = `${SCORES_BASE_URL + clientID}/${optimeraHost}${optimeraPathName}.js`;
+      let clientID = validBidRequests[0].params.clientID;
+      let scoresURL = SCORES_BASE_URL + clientID + '/' + optimeraHost + optimeraPathName + '.js';
       return {
         method: 'GET',
         url: scoresURL,
         payload: validBidRequests,
       };
     }
-    return {};
   },
   /**
    * Unpack the response from the server into a list of bids.
@@ -50,25 +49,24 @@ export const spec = {
    * @param {*} serverResponse A successful response from the server.
    * @return {Bid[]} An array of bids which were nested inside the server.
    */
-  interpretResponse (serverResponse, bidRequest) {
-    const validBids = bidRequest.payload;
-    const bidResponses = [];
+  interpretResponse: function (serverResponse, bidRequest) {
+    let validBids = bidRequest.payload;
+    let bidResponses = [];
     let dealId = '';
     if (typeof serverResponse.body !== 'undefined') {
-      const scores = serverResponse.body;
-      for (let i = 0; i < validBids.length; i += 1) {
+      let scores = serverResponse.body;
+      for (let i = 0; i < validBids.length; i++) {
         if (typeof validBids[i].params.clientID !== 'undefined') {
           if (validBids[i].adUnitCode in scores) {
-            const deviceDealId = deepAccess(scores, `device.${validBids[i].params.device}.${validBids[i].adUnitCode}`);
-            dealId = deviceDealId || scores[validBids[i].adUnitCode];
+            dealId = scores[validBids[i].adUnitCode];
           }
-          const bidResponse = {
+          let bidResponse = {
             requestId: validBids[i].bidId,
             ad: '<div></div>',
             cpm: 0.01,
             width: 0,
             height: 0,
-            dealId,
+            dealId: dealId,
             ttl: 300,
             creativeId: '1',
             netRevenue: '0',

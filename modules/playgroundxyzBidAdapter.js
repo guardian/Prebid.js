@@ -102,10 +102,18 @@ export const spec = {
   },
 
   getUserSyncs: function (syncOptions) {
-    return [{
-      type: 'image',
-      url: '//ib.adnxs.com/getuidnb?https://ads.playground.xyz/usersync?partner=appnexus&uid=$UID'
-    }];
+    if (syncOptions.iframeEnabled) {
+      return [{
+        type: 'iframe',
+        url: '//acdn.adnxs.com/ib/static/usersync/v3/async_usersync.html'
+      }];
+    }
+    if (syncOptions.pixelEnabled) {
+      return [{
+        type: 'image',
+        url: '//ib.adnxs.com/getuidnb?https://ads.playground.xyz/usersync?partner=appnexus&uid=$UID'
+      }];
+    }
   }
 }
 

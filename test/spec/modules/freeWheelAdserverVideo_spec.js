@@ -1,13 +1,12 @@
 import { expect } from 'chai';
-import { adpodUtils } from 'modules/freeWheelAdserverVideo';
+import { getTargeting, adpodUtils } from 'modules/freeWheelAdserverVideo';
 import { auctionManager } from 'src/auctionManager';
 import { config } from 'src/config';
 
 describe('freeWheel adserver module', function() {
   let amStub;
   let amGetAdUnitsStub;
-  let xhr;
-  let requests;
+  let pbcStub;
 
   before(function () {
     let adUnits = [{
@@ -53,13 +52,12 @@ describe('freeWheel adserver module', function() {
     amGetAdUnitsStub = sinon.stub(auctionManager, 'getAdUnits');
     amGetAdUnitsStub.returns(adUnits);
     amStub = sinon.stub(auctionManager, 'getBidsReceived');
+    pbcStub = sinon.stub(adpodUtils, 'callPrebidCacheAfterAuction').callsFake(function (...args) {
+      args[1](null, getBidsReceived());
+    });
   });
 
   beforeEach(function () {
-    xhr = sinon.useFakeXMLHttpRequest();
-    requests = [];
-    xhr.onCreate = request => requests.push(request);
-
     config.setConfig({
       adpod: {
         brandCategoryExclusion: false,
@@ -70,7 +68,6 @@ describe('freeWheel adserver module', function() {
 
   afterEach(function() {
     config.resetConfig();
-    xhr.restore();
   });
 
   after(function () {
@@ -81,7 +78,7 @@ describe('freeWheel adserver module', function() {
   it('should return targeting for all adunits', function() {
     amStub.returns(getBidsReceived());
     let targeting;
-    adpodUtils.getTargeting({
+    getTargeting({
       callback: function(errorMsg, targetingResult) {
         targeting = targetingResult;
       }
@@ -94,7 +91,7 @@ describe('freeWheel adserver module', function() {
   it('should return targeting for passed adunit code', function() {
     amStub.returns(getBidsReceived());
     let targeting;
-    adpodUtils.getTargeting({
+    getTargeting({
       codes: ['preroll_1'],
       callback: function(errorMsg, targetingResult) {
         targeting = targetingResult;
@@ -123,7 +120,7 @@ describe('freeWheel adserver module', function() {
     }];
     amStub.returns(getBidsReceived().concat(bannerBid));
     let targeting;
-    adpodUtils.getTargeting({
+    getTargeting({
       callback: function(errorMsg, targetingResult) {
         targeting = targetingResult;
       }
@@ -147,7 +144,7 @@ describe('freeWheel adserver module', function() {
       createBid(10, 'preroll_1', 30, '10.00_395_30s', '123', '395')
     ]);
     let targeting;
-    adpodUtils.getTargeting({
+    getTargeting({
       callback: function(errorMsg, targetingResult) {
         targeting = targetingResult;
       }
@@ -164,7 +161,7 @@ describe('freeWheel adserver module', function() {
       createBid(15, 'midroll_1', 90, '15.00_406_90s', '123', '406')
     ]);
     let targeting;
-    adpodUtils.getTargeting({
+    getTargeting({
       callback: function(errorMsg, targetingResult) {
         targeting = targetingResult;
       }
@@ -182,20 +179,15 @@ describe('freeWheel adserver module', function() {
     });
     amStub.returns(getBidsReceived());
     let targeting;
-    adpodUtils.getTargeting({
+    getTargeting({
       callback: function(errorMsg, targetingResult) {
         targeting = targetingResult;
       }
     });
 
-    requests[0].respond(
-      200,
-      { 'Content-Type': 'text/plain' },
-      JSON.stringify({'responses': getBidsReceived().slice(0, 4)})
-    );
-
+    expect(pbcStub.called).to.equal(true);
     expect(targeting['preroll_1'].length).to.equal(3);
-    expect(targeting['midroll_1'].length).to.equal(3);
+    expect(targeting['midroll_1'].length).to.equal(4);
   });
 });
 

@@ -66,7 +66,7 @@ let getExt1ServerResponse = () => {
         'testCase': 'A:00_B:100',
         'opdomain': '1',
         'checksum': '6378',
-        'cpm': '0',
+        'cmp': '0',
         'bstfct': '100',
         'totstop': 'false',
         'pcmurl': 'bidsrv01.reload.net'
@@ -82,7 +82,6 @@ let getExt1ServerResponse = () => {
     'partID': 'prx_part',
     'opdomID': '0',
     'bsrvID': 1,
-    'adUnitCode': '1b243858-3c53-43dc-9fdf-89f839ea4a0f',
     'banner': {'w': 300, 'h': 250}
   }));
 }
@@ -104,7 +103,7 @@ let getExt2ServerResponse = () => {
         'testCase': 'A:00_B:100',
         'opdomain': '1',
         'checksum': '6378',
-        'cpm': '0',
+        'cmp': '0',
         'bstfct': '100',
         'totstop': 'false',
         'pcmurl': 'bidsrv00.reload.net'
@@ -118,7 +117,6 @@ let getExt2ServerResponse = () => {
     'partID': 'prx_part',
     'opdomID': '0',
     'bsrvID': 1,
-    'adUnitCode': '1b243858-3c53-43dc-9fdf-89f839ea4a0f',
     'banner': {'w': 160, 'h': 600}
   }));
 }

@@ -75,8 +75,12 @@ var adUnits = [
       params: {
         unit: '1611023124',
         delDomain: 'PUBLISHER-d.openx.net',
-        video: {
-          mimes: ['video/x-ms-wmv, video/mp4']
+        openrtb: {
+          imp: [{
+            video: {
+              mimes: ['video/x-ms-wmv, video/mp4']
+            }
+          }]
         }
       }
     }]

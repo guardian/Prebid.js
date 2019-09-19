@@ -13,6 +13,7 @@ const BUILD_PATH = './build/dist';
 const DEV_PATH = './build/dev';
 const ANALYTICS_PATH = '../analytics';
 
+
 // get only subdirectories that contain package.json with 'main' property
 function isModuleDirectory(filePath) {
   try {
@@ -106,10 +107,7 @@ module.exports = {
     }
     return Object.assign(externalModules.reduce((memo, module) => {
       try {
-        // prefer internal project modules before looking at project dependencies
-        var modulePath = require.resolve(module, {paths: ['./modules']});
-        if (modulePath === '') modulePath = require.resolve(module);
-
+        var modulePath = require.resolve(module);
         memo[modulePath] = module;
       } catch (err) {
         // do something

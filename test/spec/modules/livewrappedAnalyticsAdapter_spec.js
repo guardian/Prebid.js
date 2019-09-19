@@ -117,16 +117,6 @@ const MOCK = {
 
 const ANALYTICS_MESSAGE = {
   publisherId: 'CC411485-42BC-4F92-8389-42C503EE38D7',
-  bidAdUnits: [
-    {
-      adUnit: 'panorama_d_1',
-      timeStamp: 1519149562216
-    },
-    {
-      adUnit: 'box_d_1',
-      timeStamp: 1519149562216
-    }
-  ],
   requests: [
     {
       adUnit: 'panorama_d_1',

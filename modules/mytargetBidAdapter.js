@@ -35,12 +35,6 @@ function getSiteName(referrer) {
   return sitename;
 }
 
-function getCurrency() {
-  let currency = config.getConfig('currency.adServerCurrency');
-
-  return (currency === 'USD') ? currency : DEFAULT_CURRENCY;
-}
-
 function generateRandomId() {
   return Math.random().toString(16).substring(2);
 }
@@ -66,7 +60,7 @@ export const spec = {
         page: referrer
       },
       settings: {
-        currency: getCurrency(),
+        currency: DEFAULT_CURRENCY,
         windowSize: {
           width: window.screen.width,
           height: window.screen.height

@@ -25,13 +25,3 @@ Module that connects to Criteo's demand sources.
         }
     ];
 ```
-
-# Additional Config (Optional)
-Set the "ceh" property to provides the user's hashed email if available
-```
-  pbjs.setConfig({
-    criteo: {
-      ceh: 'hashed mail'
-    }
-  });
-```

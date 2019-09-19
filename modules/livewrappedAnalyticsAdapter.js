@@ -17,7 +17,6 @@ export const BID_WON_TIMEOUT = 500;
 
 const cache = {
   auctions: {},
-  bidAdUnits: {}
 };
 
 let livewrappedAnalyticsAdapter = Object.assign(adapter({EMPTYURL, ANALYTICSTYPE}), {
@@ -62,9 +61,6 @@ let livewrappedAnalyticsAdapter = Object.assign(adapter({EMPTYURL, ANALYTICSTYPE
         bidResponse.readyToSend = 1;
         if (!bidResponse.ttr) {
           bidResponse.ttr = time - bidResponse.start;
-        }
-        if (!cache.bidAdUnits[bidResponse.adUnit]) {
-          cache.bidAdUnits[bidResponse.adUnit] = {sent: 0, timeStamp: cache.auctions[args.auctionId].timeStamp};
         }
         break;
       case CONSTANTS.EVENTS.BIDDER_DONE:
@@ -118,7 +114,6 @@ livewrappedAnalyticsAdapter.sendEvents = function() {
     responses: getResponses(),
     wins: getWins(),
     timeouts: getTimeouts(),
-    bidAdUnits: getbidAdUnits(),
     rcv: getAdblockerRecovered()
   };
 
@@ -232,24 +227,6 @@ function getTimeouts() {
   });
 
   return timeouts;
-}
-
-function getbidAdUnits() {
-  var bidAdUnits = [];
-
-  Object.keys(cache.bidAdUnits).forEach(adUnit => {
-    let bidAdUnit = cache.bidAdUnits[adUnit];
-    if (!bidAdUnit.sent) {
-      bidAdUnit.sent = 1;
-
-      bidAdUnits.push({
-        adUnit: adUnit,
-        timeStamp: bidAdUnit.timeStamp
-      });
-    }
-  });
-
-  return bidAdUnits;
 }
 
 adapterManager.registerAnalyticsAdapter({

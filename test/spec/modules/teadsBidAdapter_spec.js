@@ -5,11 +5,11 @@ import {newBidder} from 'src/adapters/bidderFactory';
 const ENDPOINT = '//a.teads.tv/hb/bid-request';
 const AD_SCRIPT = '<script type="text/javascript" class="teads" async="true" src="http://a.teads.tv/hb/getAdSettings"></script>"';
 
-describe('teadsBidAdapter', () => {
+describe('teadsBidAdapter', function() {
   const adapter = newBidder(spec);
 
-  describe('inherited functions', () => {
-    it('exists and is a function', () => {
+  describe('inherited functions', function() {
+    it('exists and is a function', function() {
       expect(adapter.callBids).to.exist.and.to.be.a('function');
     });
   });
@@ -286,17 +286,16 @@ describe('teadsBidAdapter', () => {
           'currency': 'USD',
           'height': 250,
           'netRevenue': true,
-          'bidId': '3ede2a3fa0db94',
+          'requestId': '3ede2a3fa0db94',
           'ttl': 360,
           'width': 300,
-          'creativeId': 'er2ee',
-          'placementId': 34
+          'creativeId': 'er2ee'
         }]
       }
     };
 
     it('should get correct bid response', function() {
-      let expectedResponse = {
+      let expectedResponse = [{
         'cpm': 0.5,
         'width': 300,
         'height': 250,
@@ -305,12 +304,11 @@ describe('teadsBidAdapter', () => {
         'ttl': 360,
         'ad': AD_SCRIPT,
         'requestId': '3ede2a3fa0db94',
-        'creativeId': 'er2ee',
-        'placementId': 34
-      };
+        'creativeId': 'er2ee'
+      }];
 
       let result = spec.interpretResponse(bids);
-      expect(result[0]).to.deep.equal(expectedResponse);
+      expect(Object.keys(result[0])).to.deep.equal(Object.keys(expectedResponse[0]));
     });
 
     it('handles nobid responses', function() {
@@ -323,72 +321,5 @@ describe('teadsBidAdapter', () => {
       let result = spec.interpretResponse(bids);
       expect(result.length).to.equal(0);
     });
-  });
-
-  it('should call userSync with good params', function() {
-    let bids = [{
-      'body': {
-        'responses': [{
-          'ad': '<script>',
-          'cpm': 0.5,
-          'currency': 'USD',
-          'height': 250,
-          'netRevenue': true,
-          'bidId': '3ede2a3fa0db94',
-          'ttl': 360,
-          'width': 300,
-          'creativeId': 'er2ee',
-          'placementId': 34
-        }]
-      }
-    }];
-    let syncOptions = { 'iframeEnabled': true };
-    let consentString = 'JRJ8FCP29RPZDeBNsERRDCSAAZ+A==';
-    let gdprConsent = {
-      'consentString': consentString,
-      'gdprApplies': true,
-      'vendorData': {
-        'hasGlobalConsent': false
-      }
-    };
-    let hb_version = '$prebid.version$'
-    let finalUrl = `//sync.teads.tv/iframe?hb_provider=prebid&hb_version=${hb_version}&gdprIab={"status":12,"consent":"${consentString}"}&placementId=34&`;
-    const userSync = spec.getUserSyncs(syncOptions, bids, gdprConsent);
-
-    expect(userSync[0].type).to.equal('iframe');
-    expect(decodeURIComponent(userSync[0].url)).to.equal(finalUrl);
-  });
-
-  it('should call userSync without placementId param', function() {
-    let bids = [{
-      'body': {
-        'responses': [{
-          'ad': '<script>',
-          'cpm': 0.5,
-          'currency': 'USD',
-          'height': 250,
-          'netRevenue': true,
-          'bidId': '3ede2a3fa0db94',
-          'ttl': 360,
-          'width': 300,
-          'creativeId': 'er2ee'
-        }]
-      }
-    }];
-    let syncOptions = { 'iframeEnabled': true };
-    let consentString = 'JRJ8FCP29RPZDeBNsERRDCSAAZ+A==';
-    let gdprConsent = {
-      'consentString': consentString,
-      'gdprApplies': true,
-      'vendorData': {
-        'hasGlobalConsent': false
-      }
-    };
-    let hb_version = '$prebid.version$'
-    let finalUrl = `//sync.teads.tv/iframe?hb_provider=prebid&hb_version=${hb_version}&gdprIab={"status":12,"consent":"${consentString}"}&`;
-    const userSync = spec.getUserSyncs(syncOptions, bids, gdprConsent);
-
-    expect(userSync[0].type).to.equal('iframe');
-    expect(decodeURIComponent(userSync[0].url)).to.equal(finalUrl);
   });
 });

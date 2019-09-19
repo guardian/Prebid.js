@@ -132,6 +132,7 @@ export function nativeBidIsValid(bid, bidRequests) {
  */
 export function fireNativeTrackers(message, adObject) {
   let trackers;
+
   if (message.action === 'click') {
     trackers = adObject['native'] && adObject['native'].clickTrackers;
   } else {

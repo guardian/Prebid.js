@@ -43,17 +43,13 @@ export const spec = {
 
     bidRequests.forEach((request) => {
       serverRequest.p.push(addPlacement(request));
-      const pubcid = getId(request, 'pubcid');
+      const pubcid = getPubcId(request)
       if (pubcid) {
         serverRequest.pubcid = pubcid;
       } else if (request.crumbs) {
         if (request.crumbs.pubcid) {
           serverRequest.pubcid = request.crumbs.pubcid;
         }
-      }
-      const tdid = getId(request, 'tdid');
-      if (tdid) {
-        serverRequest.tdid = tdid;
       }
     });
     serverRequest.p = '[' + serverRequest.p.toString() + ']';
@@ -321,16 +317,10 @@ function isMraid() {
   return !!(window.mraid);
 }
 
-/**
- * Gets an id from the userId object if it exists
- * @param {*} request
- * @param {*} idType
- * @returns an id if there is one, or undefined
- */
-function getId(request, idType) {
-  let id;
-  if (request && request.userId && request.userId[idType] && typeof request.userId === 'object') {
-    id = request.userId[idType];
+function getPubcId(request) {
+  let pubcid;
+  if (request && request.userId && request.userId.pubcid && typeof request.userId === 'object') {
+    pubcid = request.userId.pubcid;
   }
-  return id;
+  return pubcid;
 }

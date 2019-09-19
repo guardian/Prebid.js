@@ -13,7 +13,6 @@ describe('bid overrides', function () {
 
   afterEach(function () {
     window.sessionStorage.clear();
-    config.resetConfig();
     sandbox.restore();
   });
 
