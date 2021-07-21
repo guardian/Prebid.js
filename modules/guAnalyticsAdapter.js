@@ -206,7 +206,13 @@ function trackAuctionEnd(args) {
   return [event];
 }
 
-// Protect against setting undefined or null values
+/**
+ * Protect against setting `undefined` or `null` values
+ *
+ * @param {Record<string, unknown>} obj the object to mutate
+ * @param {string} key
+ * @param {unknown} value will only be set if defined and not null
+ */
 function setSafely(obj, key, value) {
   if (value === undefined || value === null) {
     return;
