@@ -648,7 +648,23 @@ export function getMediaTypeGranularity(mediaType, mediaTypes, mediaTypePriceGra
 export const getPriceGranularity = (bid, { index = auctionManager.index } = {}) => {
   // Use the config value 'mediaTypeGranularity' if it has been set for mediaType, else use 'priceGranularity'
   const mediaTypeGranularity = getMediaTypeGranularity(bid.mediaType, index.getMediaTypes(bid), config.getConfig('mediaTypePriceGranularity'));
-  const granularity = (typeof bid.mediaType === 'string' && mediaTypeGranularity) ? ((typeof mediaTypeGranularity === 'string') ? mediaTypeGranularity : 'custom') : config.getConfig('priceGranularity');
+
+  /* gu-mod-start */
+
+  console.log("custom code reached: getPriceGranularity")
+
+  const guCustomPriceGranularity = config.getConfig('guCustomPriceGranularity');
+  const priceGranularity = guCustomPriceGranularity(bid) || config.getConfig('priceGranularity');
+
+  const granularity =
+    (typeof bid.mediaType === 'string' && mediaTypeGranularity)
+      ? ((typeof mediaTypeGranularity === 'string') ? mediaTypeGranularity : 'custom')
+      : priceGranularity
+
+  console.log("custom granularity", granularity)
+
+  /* gu-mod-end */
+
   return granularity;
 }
 
