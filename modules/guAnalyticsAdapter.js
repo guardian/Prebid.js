@@ -110,9 +110,6 @@ function sendAll() {
   if (isValid(events)) {
     let req = Object.assign({}, analyticsAdapter.context.requestTemplate, {hb_ev: events});
     analyticsAdapter.ajaxCall(JSON.stringify(req));
-    if (analyticsAdapter.context.enableV2Endpoint) {
-      analyticsAdapter.ajaxCallv2(JSON.stringify(req));
-    }
   }
 }
 
@@ -135,18 +132,7 @@ function logEvents(events) {
 }
 
 analyticsAdapter.ajaxCall = function ajaxCall(data) {
-  const url = `${analyticsAdapter.context.ajaxUrl}/commercial/api/hb`;
-  const callback = (data) => logEvents(JSON.parse(data).hb_ev);
-  const options = {
-    method: 'POST',
-    contentType: 'text/plain; charset=utf-8'
-  };
-  ajax(url, callback(data), data, options);
-};
-
-// Temporary function for testing new analytics endpoint
-analyticsAdapter.ajaxCallv2 = function ajaxCallv2(data) {
-  const url = analyticsAdapter.context.ajaxUrlV2;
+  const url = analyticsAdapter.context.ajaxUrl;
   if (!url) {
     return;
   }
@@ -290,8 +276,6 @@ analyticsAdapter.enableAnalytics = (config) => {
   analyticsAdapter.context = {
     ajaxUrl: config.options.ajaxUrl,
     pv: config.options.pv,
-    enableV2Endpoint: config.options.enableV2Endpoint,
-    ajaxUrlV2: config.options.ajaxUrlV2,
     requestTemplate: buildRequestTemplate(config.options),
     queue: new AnalyticsQueue()
   };
