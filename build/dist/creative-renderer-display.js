@@ -1,1 +1,0 @@
-(self.pbjsChunk=self.pbjsChunk||[]).push([[85],{3550:(s,d,e)=>{e.d(d,{G:()=>n});const n='(()=>{"use strict";window.render=function({ad:d,adUrl:e,width:i,height:r},{mkFrame:n},o){if(!d&&!e)throw{reason:"noAd",message:"Missing ad markup or URL"};{const s=o.document,t={width:i,height:r};e&&!d?t.src=e:t.srcdoc=d,s.body.appendChild(n(s,t))}}})();'}}]);
