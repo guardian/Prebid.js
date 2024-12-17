@@ -1,5 +1,5 @@
 /* @guardian/prebid.js v8.52.0-9
-Updated: 2024-11-26
+Updated: 2024-12-17
 Modules: rtdModule, userId, adyoulikeBidAdapter, appnexusBidAdapter, consentManagement, consentManagementUsp, criteoBidAdapter, gridBidAdapter, guAnalyticsAdapter, improvedigitalBidAdapter, ixBidAdapter, openxBidAdapter, ozoneBidAdapter, permutiveRtdProvider, prebidServerBidAdapter, pubmaticBidAdapter, sharedIdSystem, sonobiBidAdapter, tripleliftBidAdapter, kargoBidAdapter, rubiconBidAdapter */
 if(window.pbjs&&window.pbjs.libLoaded)try{window.pbjs.getConfig("debug")&&console.warn("Attempted to load a copy of Prebid.js that clashes with the existing 'pbjs' instance. Load aborted.")}catch(e){}else (function(){
 (()=>{var r,t={433:(r,t,e)=>{function n(r,t,e,n,o){for(t=t.split?t.split("."):t,n=0;n<t.length;n++)r=r?r[t[n]]:o;return r===o?e:r}e.d(t,{A:()=>n})},8128:r=>{
