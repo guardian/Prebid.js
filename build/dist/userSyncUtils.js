@@ -1,0 +1,1 @@
+(self.pbjsChunk=self.pbjsChunk||[]).push([[550],{3461:(p,n,e)=>{function t(p,n,e){let t={};return p&&("boolean"==typeof p.gdprApplies&&(t.gdpr=Number(p.gdprApplies)),"string"==typeof p.consentString&&(t.gdpr_consent=p.consentString)),n&&(t.us_privacy=encodeURIComponent(n)),e?.gppString&&(t.gpp=e.gppString,t.gpp_sid=e.applicableSections?.toString()),t}e.d(n,{d:()=>t})}}]);

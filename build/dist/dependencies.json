@@ -1,0 +1,74 @@
+{
+  "prebid-core.js": [
+    "chunk-core.js",
+    "creative-renderer-display.js"
+  ],
+  "appnexusBidAdapter.js": [
+    "chunk-core.js",
+    "keywords.js",
+    "appnexusUtils.js",
+    "transformParamsUtils.js",
+    "chunk.js",
+    "categoryTranslationMapping.js"
+  ],
+  "consentManagementTcf.js": [
+    "chunk-core.js",
+    "cmp.js",
+    "consentManagement.js"
+  ],
+  "consentManagementUsp.js": [
+    "cmp.js"
+  ],
+  "criteoBidAdapter.js": [
+    "chunk-core.js",
+    "ortbConverter.js",
+    "ortb2.5Translator.js"
+  ],
+  "gridBidAdapter.js": [
+    "processResponse.js"
+  ],
+  "guAnalyticsAdapter.js": [
+    "analyticsAdapter.js"
+  ],
+  "improvedigitalBidAdapter.js": [
+    "chunk-core.js",
+    "ortbConverter.js",
+    "currencyUtils.js"
+  ],
+  "ixBidAdapter.js": [
+    "gptUtils.js"
+  ],
+  "openxBidAdapter.js": [
+    "chunk-core.js",
+    "ortbConverter.js"
+  ],
+  "prebidServerBidAdapter.js": [
+    "chunk-core.js",
+    "ortbConverter.js",
+    "pbsExtensions.js",
+    "currencyUtils.js"
+  ],
+  "rtdModule.js": [
+    "objectGuard.js"
+  ],
+  "rubiconBidAdapter.js": [
+    "chunk-core.js",
+    "ortbConverter.js",
+    "keywords.js",
+    "pbsExtensions.js",
+    "userSyncUtils.js"
+  ],
+  "sharedIdSystem.js": [
+    "domainOverrideToRootDomain.js"
+  ],
+  "sonobiBidAdapter.js": [
+    "keywords.js",
+    "gptUtils.js"
+  ],
+  "tripleliftBidAdapter.js": [
+    "urlUtils.js"
+  ],
+  "userId.js": [
+    "chunk-core.js"
+  ]
+}
