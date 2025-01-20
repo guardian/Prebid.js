@@ -225,23 +225,22 @@ describe('auctionmanager.js', function () {
     /* return the expected response for a given bid, filter by keys if given */
     function getDefaultExpected(bid, keys) {
       var expected = {};
-      expected[ TARGETING_KEYS.BIDDER ] = bid.bidderCode;
-      expected[ TARGETING_KEYS.AD_ID ] = bid.adId;
-      expected[ TARGETING_KEYS.PRICE_BUCKET ] = bid.pbMg;
-      expected[ TARGETING_KEYS.SIZE ] = bid.getSize();
-      expected[ TARGETING_KEYS.SOURCE ] = bid.source;
-      expected[ TARGETING_KEYS.FORMAT ] = bid.mediaType;
-      expected[ TARGETING_KEYS.ADOMAIN ] = bid.meta.advertiserDomains[0];
-      expected[ TARGETING_KEYS.ACAT ] = bid.meta.primaryCatId;
-
+      expected[TARGETING_KEYS.BIDDER] = bid.bidderCode;
+      expected[TARGETING_KEYS.AD_ID] = bid.adId;
+      expected[TARGETING_KEYS.PRICE_BUCKET] = bid.pbMg;
+      expected[TARGETING_KEYS.SIZE] = bid.getSize();
+      expected[TARGETING_KEYS.SOURCE] = bid.source;
+      expected[TARGETING_KEYS.FORMAT] = bid.mediaType;
+      expected[TARGETING_KEYS.ADOMAIN] = bid.meta.advertiserDomains[0];
+      expected[TARGETING_KEYS.ACAT] = bid.meta.primaryCatId;
+      expected[TARGETING_KEYS.DSP] = bid.meta.networkId;
+      expected[TARGETING_KEYS.CRID] = bid.creativeId;
       /* gu-mod-start */
-      expected[ TARGETING_KEYS.TIME_TO_RESPOND ] = bid.timeToRespond;
-      expected[ TARGETING_KEYS.CPM ] = bid.cpm;
-      expected[ TARGETING_KEYS.AUCTION_ID ] = bid.auctionId;
+      expected[TARGETING_KEYS.TIME_TO_RESPOND] = bid.timeToRespond;
+      expected[TARGETING_KEYS.CPM] = bid.cpm;
+      expected[TARGETING_KEYS.AUCTION_ID] = bid.auctionId;
       /* gu-mod-end */
 
-      expected[ TARGETING_KEYS.DSP ] = bid.meta.networkId;
-      expected[ TARGETING_KEYS.CRID ] = bid.creativeId;
       if (bid.mediaType === 'video') {
         expected[TARGETING_KEYS.UUID] = bid.videoCacheKey;
         expected[TARGETING_KEYS.CACHE_ID] = bid.videoCacheKey;
