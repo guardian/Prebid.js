@@ -190,12 +190,6 @@ export function newTargeting(auctionManager) {
     }
   };
 
-  /* gu-mod-start */
-  function addTimedOutIncompleteAuction(adUnitCode, targeting) {
-    return targeting.push({[adUnitCode]: [{hb_ttr: [-1]}]});
-  }
-  /* gu-mod-end */
-
   targeting.resetPresetTargetingAST = function(adUnitCode) {
     const adUnitCodes = getAdUnitCodes(adUnitCode);
     adUnitCodes.forEach(function(unit) {
@@ -297,25 +291,6 @@ export function newTargeting(auctionManager) {
     const { customKeysByUnit, filteredBids } = getfilteredBidsAndCustomKeys(adUnitCodes, bidsReceived);
     const bidsSorted = getHighestCpmBidsFromBidPool(filteredBids, winReducer, adUnitBidLimit, undefined, winSorter);
     let targeting = getTargetingLevels(bidsSorted, customKeysByUnit);
-
-    // store a reference of the targeting keys
-    targeting.map(adUnitCode => {
-      Object.keys(adUnitCode).map(key => {
-        adUnitCode[key].map(targetKey => {
-          if (pbTargetingKeys.indexOf(Object.keys(targetKey)[0]) === -1) {
-            pbTargetingKeys = Object.keys(targetKey).concat(pbTargetingKeys);
-          }
-        });
-      });
-    });
-
-    /* gu-mod-start */
-    const winningBid = winningBidTargeting.length > 0;
-    const someBidTimedOut = auctionManager.getBidsRequested().some((bidRequest) => bidRequest.doneCbCallCount === 0);
-    if (!winningBid && someBidTimedOut) {
-      addTimedOutIncompleteAuction(adUnitCodes[0], targeting);
-    }
-    /* gu-mod-end */
 
     const defaultKeys = Object.keys(Object.assign({}, DEFAULT_TARGETING_KEYS, NATIVE_KEYS));
     let allowedKeys = config.getConfig(CFG_ALLOW_TARGETING_KEYS);
