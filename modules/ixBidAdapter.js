@@ -736,9 +736,6 @@ function buildRequest(validBidRequests, bidderRequest, impressions, version) {
     r = deduplicateImpExtFields(r);
     r = removeSiteIDs(r);
 
-    r = deduplicateImpExtFields(r);
-    r = removeSiteIDs(r);
-
     if (isLastAdUnit) {
       let exchangeUrl = `${baseUrl}?`;
 

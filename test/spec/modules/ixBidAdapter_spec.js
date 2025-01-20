@@ -952,11 +952,6 @@ describe('IndexexchangeAdapter', function () {
       uids: [{
         id: DEFAULT_USERID_DATA['pairId'].envelope
       }]
-    }, {
-      source: '33across.com',
-      uids: [{
-        id: DEFAULT_USERID_DATA['33acrossId'].envelope
-      }]
     },
   ];
 
