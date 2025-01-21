@@ -16,11 +16,6 @@ Building `build/dist/prebid.js` is achieved by running the following `gulp` comm
 gulp build
 ```
 
-- Ad server targeting includes a `hb_ttr` parameter, whose value will be one of:
-  - the time to respond for the winning bid in ms (ie. time between bid request sent and bid response received)
-  - -1 if the auction timed out without a winning bid and still waiting for at least one bid response
-  - otherwise not passed at all
-
 ## Bid adapters
 
 - The [Sonobi adapter](/modules/sonobiBidAdapter.js):

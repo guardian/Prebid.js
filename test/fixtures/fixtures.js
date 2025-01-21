@@ -5,9 +5,6 @@ const utils = require('src/utils.js');
 
 function convertTargetingsFromOldToNew(targetings) {
   var mapOfOldToNew = {
-    /* gu-mod-start */
-    'hb_ttr': TARGETING_KEYS.TIME_TO_RESPOND,
-    /* gu-mod-end */
     'hb_bidder': TARGETING_KEYS.BIDDER,
     'hb_adid': TARGETING_KEYS.AD_ID,
     'hb_pb': TARGETING_KEYS.PRICE_BUCKET,
