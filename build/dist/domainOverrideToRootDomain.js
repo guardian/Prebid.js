@@ -1,1 +1,0 @@
-(self.pbjsChunk=self.pbjsChunk||[]).push([[764],{2186:(o,n,e)=>{function t(o,n){return function(){const e=document.domain.split("."),t=`_gd${Date.now()}_${n}`;for(let n,i,s=0;s<e.length;s++){const u=e.slice(s).join(".");if(o.setCookie(t,"1",void 0,void 0,u),i=o.getCookie(t),o.setCookie(t,"","Thu, 01 Jan 1970 00:00:01 GMT",void 0,u),"1"!==i)return n;n=u}}}e.d(n,{w:()=>t})}}]);
