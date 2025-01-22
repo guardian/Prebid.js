@@ -16,11 +16,6 @@ Building `build/dist/prebid.js` is achieved by running the following `gulp` comm
 gulp build
 ```
 
-- Ad server targeting includes a `hb_ttr` parameter, whose value will be one of:
-  - the time to respond for the winning bid in ms (ie. time between bid request sent and bid response received)
-  - -1 if the auction timed out without a winning bid and still waiting for at least one bid response
-  - otherwise not passed at all
-
 ## Bid adapters
 
 - The [Sonobi adapter](/modules/sonobiBidAdapter.js):
@@ -65,8 +60,8 @@ gulp build
 1. Ensure the package.json name field is `@guardian/prebid.js`
 1. If this upgrade diverges from the upstream prebid.js version (i.e. a Guardian specific change) add a suffix to the package.json version field e.g. 8.34.0-1
 1. Create new build
-   > npm run build
-1. Commit and ensure `build/dist/prebid.js` is included
+   > npm run gu-build
+1. Commit and ensure `build/dist/all/prebid.js` is included
 
 ### Troubleshooting
 
