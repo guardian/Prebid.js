@@ -17,5 +17,6 @@
   "sonobiBidAdapter",
   "tripleliftBidAdapter",
   "kargoBidAdapter",
-  "rubiconBidAdapter"
+  "rubiconBidAdapter",
+  "ttdBidAdapter"
 ]
