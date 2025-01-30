@@ -137,7 +137,7 @@ export const spec = {
     { code: 'xhb' },
     { code: 'pangaea' },
     /* gu-mod-end */
-  ];
+  ],
   supportedMediaTypes: [BANNER, VIDEO, NATIVE],
 
   /**
