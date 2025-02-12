@@ -17,6 +17,5 @@ src/constants.js                    @guardian/commercial-dev
 test/fixtures/fixtures.js           @guardian/commercial-dev
 modules/appnexusBidAdapter.js       @guardian/commercial-dev
 modules/openxBidAdapter.js          @guardian/commercial-dev
-modules/sonobiBidAdapter.js         @guardian/commercial-dev
 test/spec/auctionmanager_spec.js    @guardian/commercial-dev
 test/spec/unit/pbjs_api_spec.js     @guardian/commercial-dev

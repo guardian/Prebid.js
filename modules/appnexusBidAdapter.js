@@ -135,7 +135,6 @@ export const spec = {
     /* gu-mod-start */
     { code: 'and' },
     { code: 'xhb' },
-    { code: 'pangaea' },
     /* gu-mod-end */
   ],
   supportedMediaTypes: [BANNER, VIDEO, NATIVE],
