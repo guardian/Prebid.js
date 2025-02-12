@@ -21,7 +21,7 @@ gulp build
 - The [Sonobi adapter](/modules/sonobiBidAdapter.js):
   - has an extra request parameter, `gmgt`, holding AppNexus targeting key-values
   - has a customised `pv` parameter, holding the Ophan-generated pageview ID
-- The [AppNexus adapter](/modules/appnexusBidAdapter.js) has an alias `xhb` for Xaxis, an alias `and` for AppNexus direct and an alias `pangaea` for Pangaea.
+- The [AppNexus adapter](/modules/appnexusBidAdapter.js) has an alias `xhb` for Xaxis, and an alias `and` for AppNexus direct
 - The [OpenX adapter](/modules/openxBidAdapter.js) has an alias `oxd` for OpenX direct, instead of via server-side header bidding.
 
 ## Analytics adapters
