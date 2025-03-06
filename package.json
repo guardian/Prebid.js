@@ -5,7 +5,8 @@
   "main": "src/prebid.js",
   "files": [
     "build/dist",
-    "modules"
+    "modules",
+    "src"
   ],
   "scripts": {
     "serve": "gulp serve",
