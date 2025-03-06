@@ -3,11 +3,6 @@
   "version": "9.27.0-1",
   "description": "Header Bidding Management Library",
   "main": "src/prebid.js",
-  "files": [
-    "build/dist",
-    "modules",
-    "src"
-  ],
   "scripts": {
     "serve": "gulp serve",
     "test": "gulp test",
