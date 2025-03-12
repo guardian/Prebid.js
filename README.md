@@ -1,5 +1,5 @@
 # This repo has been archived
-We now use the standard prebid.js npm module in the commercial bundle
+We now use the standard prebid.js npm module in the commercial bundle as of [this PR in commercial](https://github.com/guardian/commercial/pull/1862)
 
 <!-- gu-mod-start -->
 ## Guardian optimised build
